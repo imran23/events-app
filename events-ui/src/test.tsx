@@ -1,66 +1,45 @@
 import React from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  Modal,
-  Button,
-  Alert,
-  Pressable,
-} from 'react-native';
-import { useState } from 'react';
+import { View, Text, Modal, TouchableOpacity, StyleSheet } from 'react-native';
 
-const CameraPermissionDialog = () => {
-  const [modalVisible, setModalVisible] = useState(false);
+interface Props {
+  visible: boolean;
+  onClose: () => void;
+}
 
-  const handleAllow = () => {
-    console.log("OK button clicked");
-    setModalVisible(false);
-  };
-
-  const handleDeny = () => {
-    console.log("Don't Allow button clicked");
-    setModalVisible(false);
-  };
-
+const CameraPermissionDialog: React.FC<Props> = ({ visible, onClose }) => {
   return (
-    <View style={styles.container}>
-      <Button
-        title="Add Insurance"
-        onPress={() => setModalVisible(true)}
-      />
-      <Modal
-        animationType="slide"
-        transparent={true}
-        visible={modalVisible}
-        onRequestClose={() => setModalVisible(false)}
-      >
-        <View style={styles.centeredView}>
-          <View style={styles.modalView}>
-            <Text style={styles.title}>
-              Company would like to access your camera
-            </Text>
-            <Text style={styles.description}>
-              To take photos of your card and upload the photo.
-            </Text>
-            <View style={styles.buttonContainer}>
-              <Pressable
-                style={[styles.button, styles.buttonDeny]}
-                onPress={handleDeny}
-              >
-                <Text style={styles.textStyle}>Don't Allow</Text>
-              </Pressable>
-              <Pressable
-                style={[styles.button, styles.buttonAllow]}
-                onPress={handleAllow}
-              >
-                <Text style={styles.textStyle}>OK</Text>
-              </Pressable>
-            </View>
+    <Modal transparent visible={visible} animationType="fade">
+      <View style={styles.container}>
+        <View style={styles.dialog}>
+          <Text style={styles.title}>Company would like to access your camera</Text>
+          <Text style={styles.description}>
+            To take photos of your card and upload the photo.
+          </Text>
+
+          <View style={styles.buttonSection}>
+            <TouchableOpacity
+              style={styles.buttonLeft}
+              onPress={() => {
+                console.log("Don't Allow clicked");
+                onClose();
+              }}
+            >
+              <Text>Don't Allow</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={styles.buttonRight}
+              onPress={() => {
+                console.log("OK clicked");
+                onClose();
+              }}
+            >
+              <Text>OK</Text>
+            </TouchableOpacity>
           </View>
         </View>
-      </Modal>
-    </View>
+      </View>
+    </Modal>
   );
 };
 
@@ -69,66 +48,50 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)', // for backdrop blur effect
   },
-  centeredView: {
-    flex: 1,
+  dialog: {
+    backgroundColor: '#F2F2F2',
+    height: 273,
+    width: 167,
+    borderRadius: 14,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'rgba(0,0,0,0.5)', // Backdrop filter effect
-  },
-  modalView: {
-    backgroundColor: '#F2F2F2',
-    borderRadius: 14,
-    width: 273,
-    height: 167,
-    alignItems: 'center',
-    padding: 20,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-    elevation: 5,
+    padding: 10,
   },
   title: {
     width: 241,
     height: 44,
-    textAlign: 'center',
-    fontWeight: 'bold',
-    opacity: 1,
     fontSize: 18,
+    fontWeight: 'bold',
+    textAlign: 'center',
   },
   description: {
-    textAlign: 'center',
     fontFamily: 'SF Pro Text',
     fontSize: 13,
     fontWeight: '400',
     lineHeight: 18,
     letterSpacing: -0.078,
+    textAlign: 'center',
     marginVertical: 10,
   },
-  buttonContainer: {
+  buttonSection: {
     flexDirection: 'row',
-    width: 273,
-    height: 44,
+    width: '100%',
   },
-  button: {
+  buttonLeft: {
     flex: 1,
     height: 44,
     justifyContent: 'center',
     alignItems: 'center',
-    paddingVertical: 11,
-    paddingHorizontal: 16,
-  },
-  buttonDeny: {
     borderRightWidth: 0.5,
-    borderColor: '#3C3C435C',
+    borderRightColor: '#3C3C435C',
   },
-  buttonAllow: {},
-  textStyle: {
-    fontSize: 16,
+  buttonRight: {
+    flex: 1,
+    height: 44,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
 
