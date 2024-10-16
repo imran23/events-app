@@ -96,3 +96,37 @@ const styles = StyleSheet.create({
 });
 
 export default CameraPermissionDialog;
+
+import React, { useState } from 'react';
+import { View, Button, StyleSheet } from 'react-native';
+import CameraPermissionDialog from './CameraPermissionDialog'; // Ensure the correct path
+
+const MainComponent = () => {
+  const [dialogVisible, setDialogVisible] = useState(false);
+
+  const handleAddInsuranceClick = () => {
+    setDialogVisible(true);
+  };
+
+  const handleCloseDialog = () => {
+    setDialogVisible(false);
+  };
+
+  return (
+    <View style={styles.container}>
+      <Button title="Add Insurance" onPress={handleAddInsuranceClick} />
+      <CameraPermissionDialog visible={dialogVisible} onClose={handleCloseDialog} />
+    </View>
+  );
+};
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+});
+
+export default MainComponent;
+
